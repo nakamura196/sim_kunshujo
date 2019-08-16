@@ -2,7 +2,7 @@
     <md-toolbar id="toolbar" md-elevation="0" class="md-transparent md-absolute" :class="extraNavClasses" :color-on-scroll="colorOnScroll">
         <div class="md-toolbar-row md-collapse-lateral">
             <div class="md-toolbar-section-start">
-                <h3 class="md-title">宮武外骨蒐集資料画像検索</h3>
+                <h3 class="md-title">貼り込み資料画像検索プロトタイプ</h3>
             </div>
             <div class="md-toolbar-section-end">
                 <md-button class="md-just-icon md-simple md-toolbar-toggle" :class="{toggled: toggledClass}" @click="toggleNavbarMobile()">
@@ -33,9 +33,14 @@
                                 <p>メタデータ検索</p>
                             </md-list-item>
 
-                            <md-list-item target="_blank" href="https://nakamura196.github.io/sim_gaikotsu/">
+                            <md-list-item target="_blank" href="https://nakamura196.github.io/sim_kunshujo/">
                                 <i class="material-icons">3d_rotation</i>
                                 <p>可視化</p>
+                            </md-list-item>
+    
+                            <md-list-item href="https://docs.google.com/presentation/d/1sfb57LXGQSNgJEvaqQUsjzImA6hoVBFBHyban4deYGA/edit?usp=sharing" target="_blank">
+                                <i class="material-icons">book</i>
+                                <p>説明資料</p>
                             </md-list-item>
 
                         </md-list>

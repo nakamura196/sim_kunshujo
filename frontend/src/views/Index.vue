@@ -4,7 +4,7 @@
       <div class="container">
         <div class="md-layout">
           <div class="md-layout-item">
-            <h1 class="title">宮武外骨蒐集資料画像検索
+            <h1 class="title">貼り込み資料画像検索プロトタイプ
             </h1>
             <br>
             <md-button v-bind:to="{ name : 'search'}" class="md-success md-lg">
@@ -30,7 +30,8 @@
               <br/>
 
               <h5 class="description">&nbsp;&nbsp;本システムは東京大学総合図書館が公開する
-                <a href="https://iiif.dl.itc.u-tokyo.ac.jp/repo/s/gaikotsu/page/home">宮武外骨蒐集資料</a>の資料を対象として、貼り込まれた資料単位での画像検索が可能なプロトタイプです。
+                <a href="https://iiif.dl.itc.u-tokyo.ac.jp/repo/s/tanaka">田中芳男・博物学コレクション</a>の資料と、国立国会図書館デジタルコレクションで公開されている
+                <a href="http://dl.ndl.go.jp/info:ndljp/pid/2610716">張交帖</a>を対象として、貼り込まれた資料単位での画像検索が可能なプロトタイプです。2019年1月末時点において、99帖、13,069コマ、34,746件の貼り込み資料が検索対象となっています。
               </h5>
               <h5 class="description">&nbsp;&nbsp;貼り込み資料の抽出は、物体検出アルゴリズムYOLO v3を用いて、機械的に実行しています。また、
                 <a href="https://kunshujo.dl.itc.u-tokyo.ac.jp/">電子展示『&#25411;拾帖』</a>で公開されている貼り込み資料2,645件をモデルのファインチューニングに利用しています。詳細については、
@@ -79,19 +80,27 @@ export default {
       items: [
         {
           thumbnail:
-            "https://iiif.dl.itc.u-tokyo.ac.jp/repo/iiif-img/84267/3795,1519,1796,1617/,300/0/default.jpg"
+            "https://iiif.dl.itc.u-tokyo.ac.jp/iiif/kunshujou/A00_6010/046/046_0052.tif/4117,620,2186,2324/,300/0/default.jpg"
         },
         {
           thumbnail:
-            "https://iiif.dl.itc.u-tokyo.ac.jp/repo/iiif-img/84195/3637,741,2210,3315/,300/0/default.jpg"
+            "https://iiif.dl.itc.u-tokyo.ac.jp/iiif/kunshujou/A00_6010/053/053_0162.tif/955,699,1920,1349/,300/0/default.jpg"
         },
         {
           thumbnail:
-            "https://iiif.dl.itc.u-tokyo.ac.jp/repo/iiif-img/86470/2611,294,2276,1629/,300/0/default.jpg"
+            "https://iiif.dl.itc.u-tokyo.ac.jp/iiif/kunshujou/A00_6010/049/049_0175.tif/5397,2787,2009,2541/,300/0/default.jpg"
         },
         {
           thumbnail:
-            "https://iiif.dl.itc.u-tokyo.ac.jp/repo/iiif-img/86033/3532,483,2242,3872/,300/0/default.jpg"
+            "https://iiif.dl.itc.u-tokyo.ac.jp/iiif/kunshujou/A00_6010/043/043_0100.tif/5348,2846,1093,1004/,300/0/default.jpg"
+        },
+        {
+          thumbnail:
+            "https://iiif.dl.itc.u-tokyo.ac.jp/iiif/kunshujou/A00_6010/026/026_0027.tif/3813,1735,2678,3432/,300/0/default.jpg"
+        },
+        {
+          thumbnail:
+            "https://iiif.dl.itc.u-tokyo.ac.jp/iiif/kunshujou/A00_6010/065/065_0024.tif/5259,1940,1644,1960/,300/0/default.jpg"
         }
       ]
     };
