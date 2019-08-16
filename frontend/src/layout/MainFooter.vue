@@ -6,18 +6,8 @@
             <nav>
                 <ul>
                     <li>
-                        <a href="https://iiif.dl.itc.u-tokyo.ac.jp/repo/s/tanaka">
-                            田中芳男・博物学コレクション
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://kunshujo.dl.itc.u-tokyo.ac.jp/">
-                            電子展示『捃拾帖』
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://dl.ndl.go.jp/info:ndljp/pid/2610716">
-                            国立国会図書館『張交帖』
+                        <a href="https://iiif.dl.itc.u-tokyo.ac.jp/repo/s/gaikotsu/page/home">
+                            宮武外骨蒐集資料
                         </a>
                     </li>
                 </ul>

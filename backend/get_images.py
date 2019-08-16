@@ -20,58 +20,51 @@ def download_img(url, file_name):
 
 odir = "data/images"
 
-collection_url = "https://nakamura196.github.io/kunshujo-i/collection/collection.json"
+collection_url = "https://nakamura196.github.io/gaikotsu-i/collection/collection.json"
 
 response = urllib.request.urlopen(collection_url)
 response_body = response.read().decode("utf-8")
 collection = json.loads(response_body)
 
-collections = collection["collections"]
+curations = collection["curations"]
 
 thumbs = {}
 thumb_array = []
 
-for c in collections:
-    response = urllib.request.urlopen(c["@id"])
+for i in range(len(curations)):
+    print(i)
+    curation_url = curations[i]["@id"]
+
+    print(curation_url)
+
+    response = urllib.request.urlopen(curation_url)
     response_body = response.read().decode("utf-8")
-    c_obj= json.loads(response_body)
+    curation = json.loads(response_body)
 
-    curations = c_obj["curations"]
+    selections = curation["selections"]
 
-    for i in range(len(curations)):
-        print(i)
-        curation_url = curations[i]["@id"]
+    for selection in selections:
+        members = selection["members"]
 
-        print(curation_url)
+        for member in members:
 
-        response = urllib.request.urlopen(curation_url)
-        response_body = response.read().decode("utf-8")
-        curation = json.loads(response_body)
+            thumbnail = member["thumbnail"]
+            if thumbnail not in thumb_array:
+                thumb_array.append(thumbnail)
 
-        selections = curation["selections"]
+            id = member["@id"]
 
-        for selection in selections:
-            members = selection["members"]
+            hash = md5(id.encode('utf-8')).hexdigest()
 
-            for member in members:
+            thumbnail = thumbnail.replace("/,300/", "/,600/")
 
-                thumbnail = member["thumbnail"]
-                if thumbnail not in thumb_array:
-                    thumb_array.append(thumbnail)
+            path = odir+"/"+hash+".jpg"
+            
+            if not os.path.exists(path):
+                print(id)
+                download_img(thumbnail, path)
 
-                id = member["@id"]
-
-                hash = md5(id.encode('utf-8')).hexdigest()
-
-                thumbnail = thumbnail.replace("/,300/", "/,600/")
-
-                path = odir+"/"+hash+".jpg"
-                
-                if not os.path.exists(path):
-                    print(id)
-                    download_img(thumbnail, path)
-
-                thumbs[hash] = thumbnail
+            thumbs[hash] = thumbnail
 
 with open('data/thumbs_list.json', 'w') as outfile:
     json.dump(thumbs, outfile, ensure_ascii=False,
