@@ -19,6 +19,7 @@ import numpy as np
 import collections
 # ソースコード
 import copy
+from base64 import b64decode
 
 app = Flask(__name__,
             static_folder="./dist/static",
@@ -147,6 +148,7 @@ print("END:{0}".format(t1) + "[sec]")
 
 ##################
 
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -169,7 +171,15 @@ def api_asearch():
         else:
 
             query_img = "/tmp/tmp.jpg"
-            urllib.request.urlretrieve(url, "{0}".format(query_img))
+
+            if "data:image" in url:
+                header, encoded = url.split(",", 1)
+                data = b64decode(encoded)
+
+                with open(query_img, "wb") as f:
+                    f.write(data)
+            else:
+                urllib.request.urlretrieve(url, "{0}".format(query_img))
 
             with tf.gfile.FastGFile(MODEL_PATH, 'rb') as f:
                 graph_def = tf.GraphDef()
@@ -200,7 +210,6 @@ def api_asearch():
 
     # t2 = time.time() - start
     # print("類似画像の抽出:{0}".format(t2) + "[sec]")
-
 
     data = []
 
@@ -287,11 +296,12 @@ def api_search():
 
     return jsonify(data)
 
+
 @app.route('/api/msearch')
 def api_msearch():
 
     where_metadata_label = request.args.get(
-         'where_metadata_label', default=None, type=str)
+        'where_metadata_label', default=None, type=str)
     where_metadata_value = request.args.get(
         'where_metadata_value', default=None, type=str)
     rows = request.args.get('rows', default=40, type=int)
@@ -310,6 +320,7 @@ def api_msearch():
         data.append(obj)
 
     return jsonify(data)
+
 
 @app.route('/api/random')
 def api_random():
@@ -330,7 +341,6 @@ def api_random():
 
 @app.route('/api/metadata')
 def api_metadata():
-
 
     return jsonify(metadata_summary)
 
