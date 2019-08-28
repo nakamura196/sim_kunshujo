@@ -27,7 +27,11 @@
                   style="margin-right : 10px; margin-left : 10px;"
                   type="button"
                   class="md-button md-success md-theme-default"
-                  v-on:click="$router.push({ query: { url: url } })"
+                  v-on:click="
+                    if (url != null) {
+                      $router.push({ query: { url: url } });
+                    }
+                  "
                 >
                   <div class="md-ripple">
                     <div class="md-button-content">
@@ -39,7 +43,13 @@
                   style="margin-right : 10px; margin-left : 10px;"
                   type="button"
                   class="md-button md-primary md-theme-default"
-                  v-on:click="$router.push({ query: {} })"
+                  v-on:click="
+                    if (url != null) {
+                      $router.push({ query: {} });
+                    } else {
+                      search();
+                    }
+                  "
                 >
                   <!-- v-on:click="search_random()" -->
                   <div class="md-ripple">
@@ -135,7 +145,7 @@
                   <button
                     style="margin-right : 10px; margin-left : 10px;"
                     type="button"
-                    class="md-button md-primary md-theme-default"
+                    class="md-button md-theme-default"
                     @click="rotate"
                   >
                     <div class="md-ripple">
@@ -168,11 +178,12 @@
             >
               <router-link
                 v-bind:to="{ name: 'search', query: { url: item.thumbnail } }"
-                ><img
-                  v-bind:src="item.thumbnail"
-                  alt="Image"
+              >
+                <v-lazy-image
+                  :src="item.thumbnail"
                   class="img-raised img-fluid"
-              /></router-link>
+                />
+              </router-link>
 
               <h4>{{ item.label }}</h4>
               <p>
@@ -236,19 +247,21 @@ import { Modal } from "@/components";
 // Local
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
+import VLazyImage from "v-lazy-image";
 export default {
   components: {
     Badge,
     Slider,
     VueCropper,
-    Modal
+    Modal,
+    VLazyImage
   },
   bodyClass: "profile-page",
   data() {
     return {
       url: null,
       items: [],
-      number: 60,
+      number: 40,
       loading: true,
       //prefix: "http://localhost:5000",
       prefix: "http://kunshujo-i.dl.itc.u-tokyo.ac.jp",
@@ -276,15 +289,15 @@ export default {
   },
   methods: {
     search: function() {
+      this.loading = true;
+      this.items = [];
+
       this.url = null;
       this.crop_dataurl = null;
 
       this.classicModal = false;
 
       let param = Object.assign({}, this.$route.query);
-
-      this.loading = true;
-      this.items = [];
 
       if (param.where_metadata_label) {
         this.search_metadata(
@@ -309,31 +322,31 @@ export default {
       var params = {};
       params.rows = this.number;
 
-      axios
-        .get(path, { params })
-        .then(response => {
-          this.loading = false;
-          this.items = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      axios.get(path, { params }).then(response => {
+        this.loading = false;
+        this.items = response.data;
+      });
+      /*
+                          .catch(error => {
+                            console.log(error);
+                          });
+                          */
     },
     search_url: function(url) {
-      var params = {};
-      params.url = url;
-      params.rows = this.number;
+      let params = new URLSearchParams();
+      params.append("url", url);
+      params.append("rows", this.number);
 
       const path = this.prefix + `/api/asearch`; //this.prefix+`/api/search`;
-      axios
-        .get(path, { params })
-        .then(response => {
-          this.loading = false;
-          this.items = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      axios.post(path, params).then(response => {
+        this.loading = false;
+        this.items = response.data;
+      });
+      /*
+                          .catch(error => {
+                            console.log(error);
+                          });
+                          */
     },
     search_metadata: function(label, value) {
       var params = {};
@@ -342,16 +355,15 @@ export default {
       params.rows = this.number;
 
       const path = this.prefix + `/api/msearch`;
-      axios
-        .get(path, { params })
-        .then(response => {
-          this.loading = false;
-          this.items = response.data;
-          console.log(this.items);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      axios.get(path, { params }).then(response => {
+        this.loading = false;
+        this.items = response.data;
+      });
+      /*
+                          .catch(error => {
+                            console.log(error);
+                          });
+                          */
     },
     rotate() {
       // guess what this does :)
@@ -370,5 +382,14 @@ export default {
 <style lang="scss" scoped>
 .page-header {
   height: 200px !important;
+}
+
+.v-lazy-image {
+  filter: blur(10px);
+  transition: filter 0.7s;
+}
+
+.v-lazy-image-loaded {
+  filter: blur(0);
 }
 </style>
